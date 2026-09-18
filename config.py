@@ -16,5 +16,16 @@ class Settings(BaseSettings):
 
     posts_per_page: int = 10
 
+    reset_token_expire_minutes: int = 60
+
+    mail_server: str = "localhost"
+    mail_port: int = 2525
+    mail_username: str = "43c0d5e00ee8f0"
+    mail_password: SecretStr = SecretStr("e6629bd006b107")
+    mail_from: str = "noreply@example.com"
+    mail_use_tls: bool = True
+
+    frontend_url: str = "http://localhost:8000"
+
 
 settings = Settings()  # Loaded from .env file
