@@ -1,7 +1,6 @@
 from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
-from email_utils import send_password_reset_email
 from fastapi import (
     APIRouter,
     BackgroundTasks,
@@ -30,6 +29,7 @@ from auth import (
 )
 from config import settings
 from database import get_db
+from email_utils import send_password_reset_email
 from image_utils import delete_profile_image, process_profile_image
 from schemas import (
     ChangePasswordRequest,
@@ -189,7 +189,7 @@ async def reset_password(
             detail="Invalid or expired reset token",
         )
 
-    if reset_token.expires_at.replace(tzinfo=UTC) < datetime.now(UTC):
+    if reset_token.expires_at < datetime.now(UTC):
         await db.delete(reset_token)
         await db.commit()
         raise HTTPException(

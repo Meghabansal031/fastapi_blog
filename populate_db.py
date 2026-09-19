@@ -1,4 +1,5 @@
 import asyncio
+import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -9,6 +10,11 @@ import models
 from database import AsyncSessionLocal, engine
 from image_utils import PROFILE_PICS_DIR
 from main import app
+
+# Set the event loop policy to SelectorEventLoop on Windows
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 
 POPULATE_IMAGES_DIR = Path("populate_images")
 
@@ -114,7 +120,7 @@ POSTS = [
     },
     {
         "title": "Path Parameters vs Query Parameters",
-        "content": "Use path parameters for required resource identifiers (/users/123) and query parameters for optional filters (/posts?author=corey&limit=10). FastAPI handles both beautifully with automatic validation.",
+        "content": "Use path parameters for required resource identifiers (/users/123) and query parameters for optional filters (/posts?author=megha&limit=10). FastAPI handles both beautifully with automatic validation.",
     },
     {
         "title": "Error Handling Done Right",
