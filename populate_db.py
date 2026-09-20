@@ -1,5 +1,4 @@
 import asyncio
-import sys
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
@@ -11,11 +10,6 @@ from config import settings
 from database import AsyncSessionLocal, engine
 from image_utils import _get_s3_client
 from main import app
-
-# Set the event loop policy to SelectorEventLoop on Windows
-if sys.platform == "win32":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
 
 POPULATE_IMAGES_DIR = Path("populate_images")
 
@@ -396,4 +390,4 @@ async def populate() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(populate())
+    asyncio.run(populate(), loop_factory=asyncio.SelectorEventLoop)
