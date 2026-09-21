@@ -1,0 +1,40 @@
+# Check Gloud installed
+> gcloud --version
+
+# Set project
+> gcloud config set project <PROJECT_ID>
+
+# Enable services
+> gcloud services enable run.googleapis.com
+> gcloud services enable cloudbuild.googleapis.com
+> gcloud services enable artifactregistry.googleapis.com
+
+# check services
+> gcloud services list --enabled
+
+# create repository
+> gcloud artifacts repositories create fastapi-repo --repository-format=docker --location=us-east4
+
+# Build & Push to Artifact Registry
+> gcloud builds submit --tag us-east4-docker.pkg.dev/<PROJECT_ID>/fastapi-repo/fastapi-app
+
+# Deploy to Cloud Run
+> gcloud run deploy fastapi-service --image us-east4-docker.pkg.dev/<PROJECT_ID>/fastapi-repo/fastapi-app --region us-east4 --allow-unauthenticated
+
+# Domain mapping
+> gcloud beta run domain-mappings create --service=fastapi-service --domain=<YOUR_DOMAIN> --region=us-east4
+
+# Domain testing (after approx. an hour)
+> gcloud beta run domain-mappings describe --domain=<YOUR_DOMAIN> --region=us-east4
+
+## If we made any changes to app
+# Build & Push to Artifact Registry
+> gcloud builds submit --tag us-east4-docker.pkg.dev/<PROJECT_ID>/fastapi-repo/fastapi-app
+
+# Deploy to Cloud Run
+> gcloud run deploy fastapi-service --image us-east4-docker.pkg.dev/<PROJECT_ID>/fastapi-repo/fastapi-app --region us-east4 --allow-unauthenticated
+
+
+
+# URL
+https://fastapi-service-8574715349.us-east4.run.app
